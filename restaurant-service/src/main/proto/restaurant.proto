@@ -1,0 +1,43 @@
+syntax = "proto3";
+
+package food.restaurant.v1;
+
+option java_multiple_files = true;
+option java_package = "com.foodordering.restaurant.grpc";
+option java_outer_classname = "RestaurantProto";
+
+// ─────────────────────────────────────────────
+//  Restaurant gRPC Service Contract
+//  Used by: Order Service (client)
+//           Restaurant Service (server)
+// ─────────────────────────────────────────────
+
+service RestaurantService {
+  rpc CheckAvailability (AvailabilityRequest) returns (AvailabilityResponse);
+}
+
+// ── Request ──────────────────────────────────
+message AvailabilityRequest {
+  string restaurant_id = 1;
+  repeated MealItem items = 2;
+}
+
+message MealItem {
+  string meal_id  = 1;
+  int32  quantity = 2;
+}
+
+// ── Response ─────────────────────────────────
+message AvailabilityResponse {
+  bool   available       = 1;
+  string restaurant_name = 2;
+  string message         = 3;
+  repeated MealDetail meals = 4;
+}
+
+message MealDetail {
+  string meal_id    = 1;
+  string name       = 2;
+  double unit_price = 3;
+  bool   in_stock   = 4;
+}
